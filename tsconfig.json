@@ -13,7 +13,7 @@
     "skipLibCheck": true,
     "typeRoots": ["../../app/node_modules/@types"],
     "paths": {
-      "@companion/plugin": ["../../sdk/js/@companion/plugin/index.ts"]
+      "@companion-lab/plugin": ["../../sdk/js/@companion/plugin/index.ts"]
     }
   },
   "include": ["src"]
