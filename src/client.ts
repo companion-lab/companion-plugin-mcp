@@ -8,7 +8,7 @@
 // dropped (= keep current value) while explicit `null` for timeout_ms / oauth
 // clears them.
 
-import type { PluginContext } from "../../sdk/js/@companion/plugin";
+import type { PluginContext } from "@companion-lab/plugin";
 import type { McpCallResult, McpServerConfig, McpServerStatus, McpToolInfo } from "./types";
 
 export type AddServerInput = {

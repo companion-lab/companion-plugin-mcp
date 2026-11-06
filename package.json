@@ -4,6 +4,6 @@
   "private": true,
   "description": "MCP feature plugin for the Companion app.",
   "dependencies": {
-    "@companion-lab/plugin": "file:./sdk/js/@companion/plugin"
+    "@companion-lab/plugin": "^0.1.0"
   }
 }

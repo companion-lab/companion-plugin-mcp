@@ -2,7 +2,11 @@
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "module": "ESNext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
@@ -11,10 +15,11 @@
     "jsx": "react-jsx",
     "strict": true,
     "skipLibCheck": true,
-    "typeRoots": ["../../app/node_modules/@types"],
-    "paths": {
-      "@companion-lab/plugin": ["../../sdk/js/@companion/plugin/index.ts"]
-    }
+    "typeRoots": [
+      "../../app/node_modules/@types"
+    ]
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }

@@ -4,7 +4,7 @@
 // alarms/calendar plugin pattern.
 
 import { useCallback, useEffect, useState } from "react";
-import type { PluginContext } from "../../sdk/js/@companion/plugin";
+import type { PluginContext } from "@companion-lab/plugin";
 import { makeMcpClient, type McpClient } from "./client";
 import type { McpServerConfig, McpServerStatus, McpToolInfo } from "./types";
 
