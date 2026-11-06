@@ -1,0 +1,25 @@
+{
+  "name": "@companion/plugin",
+  "version": "0.1.0",
+  "description": "SDK for writing companion-tauri plugin frontends (React components registered through a scoped PluginContext).",
+  "type": "module",
+  "main": "index.ts",
+  "types": "index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./react": "./react.js",
+    "./react-dom": "./react-dom.js",
+    "./react-dom/client": "./react-dom.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/companion-lab/companion-sdk-js.git"
+  },
+  "keywords": [
+    "companion",
+    "plugin",
+    "sdk",
+    "tauri"
+  ],
+  "license": "MIT"
+}

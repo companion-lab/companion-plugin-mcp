@@ -1,0 +1,9 @@
+{
+  "name": "companion-plugin-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MCP feature plugin for the Companion app.",
+  "dependencies": {
+    "@companion/plugin": "file:./sdk/js/@companion/plugin"
+  }
+}

@@ -1,0 +1,13 @@
+[package]
+name = "companion-plugin-sdk"
+version = "0.1.0"
+description = "Rust backend SDK for companion-tauri plugins"
+license = "MIT"
+repository = "https://github.com/companion-lab/companion-sdk-rs"
+readme = "README.md"
+edition = "2021"
+rust-version = "1.77"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
