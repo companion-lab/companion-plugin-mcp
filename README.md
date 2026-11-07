@@ -28,13 +28,13 @@ npm install
 ```
 
 
-The `companion-plugin` CLI from the companion-tauri repo bundles the frontend
+The `companion-cli` CLI ([npm](https://www.npmjs.com/package/companion-cli),
+install with `npm install -g companion-cli`) bundles the frontend
 (and builds the Rust backend when present) into a zip importable via the app's
 **Settings → Plugins → Import plugin…**:
 
 ```bash
-node /path/to/companion-tauri/plugin-cli/bin/companion-plugin.mjs build /path/to/companion-plugin-mcp \
-  --backend
+companion-cli build /path/to/companion-plugin-mcp --backend
 ```
 
 Install dependencies first if you use a package manager lockfile
