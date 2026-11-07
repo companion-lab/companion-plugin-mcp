@@ -139,6 +139,8 @@ dependencies = [
 [[package]]
 name = "companion-plugin-sdk"
 version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5213fbb339350aeab0fa7c703c44e5879ffd688c8f502ce543e857482344f453"
 dependencies = [
  "serde",
  "serde_json",
