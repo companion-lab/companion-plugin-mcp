@@ -6,7 +6,7 @@
 // chat's always-available ask_user.
 
 import { useCallback, useEffect, useState } from "react";
-import type { PluginContext } from "@companion-lab/plugin";
+import type { PluginContext } from "../../../sdk/js/@companion/plugin";
 import { useMcpServers } from "./backend";
 import { ServerFormModal } from "./ServerFormModal";
 import type { McpOAuthSetting, McpServerConfig, McpToolInfo } from "./types";
