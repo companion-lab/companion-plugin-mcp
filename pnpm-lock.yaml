@@ -1,0 +1,27 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@companion-lab/plugin':
+        specifier: ^0.1.0
+        version: 0.1.0
+
+packages:
+
+  '@companion-lab/plugin@0.1.0':
+    resolution: {integrity: sha512-jiJOoVYl9EdFFWTXBUDcLghgzDrMoOq9JxU5vgB1V9mLpyyNmGPAUbg6YjGiCebcdvLitM+ubq34HBQIyCkVlQ==}
+    peerDependencies:
+      react: '>=18.0.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+
+snapshots:
+
+  '@companion-lab/plugin@0.1.0': {}
