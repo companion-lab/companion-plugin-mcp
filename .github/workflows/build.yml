@@ -39,7 +39,7 @@ jobs:
       matrix:
         include:
           - { os: ubuntu-latest,  platform: linux-x86_64 }
-          - { os: macos-14,       platform: macos-arm64 }
+          - { os: macos-15,       platform: macos-arm64 }
           - { os: macos-15-intel, platform: macos-x86_64 }
           - { os: windows-latest, platform: windows-x86_64 }
     runs-on: ${{ matrix.os }}
@@ -54,9 +54,11 @@ jobs:
           node-version: 20
 
       # Only used when the repo has a pnpm lockfile; harmless otherwise.
+      # pnpm 12+ tolerates settings-only pnpm-workspace.yaml files (no
+      # `packages` field), which pnpm 9 rejects.
       - uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 12
 
       - name: Install JS dependencies
         run: |
