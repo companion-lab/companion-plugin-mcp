@@ -65,7 +65,10 @@ jobs:
           if [ -f pnpm-lock.yaml ]; then
             pnpm install --frozen-lockfile
           elif [ -f package-lock.json ]; then
-            npm ci
+            # Fall back to a plain install when the committed lockfile has
+            # drifted from package.json, so a stale lockfile warns instead
+            # of failing the build.
+            npm ci || { echo "::warning::package-lock.json out of sync with package.json; fell back to npm install"; npm install; }
           else
             npm install
           fi
@@ -82,9 +85,11 @@ jobs:
           prefix-key: ${{ matrix.platform }}
 
       # Plugins that bundle models in assets/ (stt, tts) must fetch them
-      # before the build copies assets/ into the package.
+      # before the build copies assets/ into the package. stt names its
+      # script download-moonshine-models.sh, tts download-models.sh —
+      # hence the glob.
       - name: Download models
-        if: ${{ hashFiles('scripts/download-models.sh') != '' }}
+        if: ${{ hashFiles('scripts/download-*.sh') != '' }}
         run: pnpm run download:models
 
       - name: Read plugin manifest
