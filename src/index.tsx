@@ -3,7 +3,7 @@
 // `tools()` as `{server_id}__{tool_name}` and reach the chat loop through the
 // host's normal tool dispatch — the section only manages servers.
 
-import { definePlugin, type PluginContext } from "../../../sdk/js/@companion/plugin";
+import { definePlugin, type PluginContext } from "@companion-lab/plugin";
 import { McpSection } from "./McpSection";
 
 export default definePlugin((ctx: PluginContext) => {
