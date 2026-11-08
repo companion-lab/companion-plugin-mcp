@@ -1,0 +1,195 @@
+# Build the plugin into installable .zip packages and publish them.
+#
+# Every push to main (and manual dispatch) builds a zip per platform and
+# uploads it as a workflow artifact for testing. Pushing a v* tag (e.g.
+# v0.1.0) additionally publishes a GitHub Release attaching the zips, which
+# is what users download and import via the Companion app's
+# Settings -> Plugins -> Import plugin...
+#
+# The zips are built with the published `companion-cli` npm package: it
+# bundles the React frontend with esbuild, compiles backend/ with cargo in
+# release mode (when the plugin declares a backend), copies assets/, and
+# zips only the package files. Backend plugins are platform-specific — one
+# zip per matrix platform; frontend-only plugins (no manifest.backend) build
+# a single universal zip (the matrix still runs, producing identical files).
+#
+# Output goes to dist-ci/ so the locally built zips committed under dist/
+# are never touched by CI.
+
+name: Build plugin
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  # Never cancel a tag build — it publishes the release.
+  cancel-in-progress: ${{ github.ref_type != 'tag' }}
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-latest,  platform: linux-x86_64 }
+          - { os: macos-14,       platform: macos-arm64 }
+          - { os: macos-15-intel, platform: macos-x86_64 }
+          - { os: windows-latest, platform: windows-x86_64 }
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Only used when the repo has a pnpm lockfile; harmless otherwise.
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install JS dependencies
+        run: |
+          if [ -f pnpm-lock.yaml ]; then
+            pnpm install --frozen-lockfile
+          elif [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      # Backend plugins compile a Rust cdylib; frontend-only plugins have no
+      # backend/ and skip these steps.
+      - uses: dtolnay/rust-toolchain@stable
+        if: ${{ hashFiles('backend/Cargo.toml') != '' }}
+
+      - uses: Swatinem/rust-cache@v2
+        if: ${{ hashFiles('backend/Cargo.toml') != '' }}
+        with:
+          workspaces: backend
+          prefix-key: ${{ matrix.platform }}
+
+      # Plugins that bundle models in assets/ (stt, tts) must fetch them
+      # before the build copies assets/ into the package.
+      - name: Download models
+        if: ${{ hashFiles('scripts/download-models.sh') != '' }}
+        run: pnpm run download:models
+
+      - name: Read plugin manifest
+        id: meta
+        run: |
+          id=$(node -p "require('./manifest.json').id")
+          version=$(node -p "require('./manifest.json').version")
+          if [ -n "$(node -p "require('./manifest.json').backend ?? ''")" ]; then
+            zip_name="$id-$version-${{ matrix.platform }}.zip"
+          else
+            zip_name="$id-$version.zip"
+          fi
+          {
+            echo "id=$id"
+            echo "version=$version"
+            echo "zip_name=$zip_name"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Verify tag matches manifest version
+        if: ${{ github.ref_type == 'tag' }}
+        run: |
+          expected="v${{ steps.meta.outputs.version }}"
+          if [ "$expected" != "${{ github.ref_name }}" ]; then
+            echo "::error::tag ${{ github.ref_name }} does not match manifest.json version ($expected)"
+            exit 1
+          fi
+
+      - name: Build plugin zip
+        run: |
+          npx --yes companion-cli@latest build . \
+            --out dist-ci \
+            --name "${{ steps.meta.outputs.zip_name }}"
+
+      # Print the cdylib's shared-library dependencies so a release zip that
+      # wouldn't load off the build machine is visible in the run log.
+      - name: List backend library dependencies
+        if: ${{ hashFiles('backend/Cargo.toml') != '' && runner.os != 'Windows' }}
+        run: |
+          lib=$(find dist-ci \( -name "*.dylib" -o -name "*.so" \) | head -1)
+          if [ -n "$lib" ]; then
+            if [ "$(uname -s)" = "Darwin" ]; then
+              otool -L "$lib"
+            else
+              ldd "$lib" || true
+            fi
+          fi
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plugin-zip-${{ matrix.platform }}
+          path: dist-ci/*.zip
+          if-no-files-found: error
+
+  release:
+    needs: build
+    if: ${{ github.ref_type == 'tag' && startsWith(github.ref_name, 'v') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: plugin-zip-*
+          merge-multiple: true
+          path: dist
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          shopt -s nullglob
+          files=(dist/*.zip)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "::error::no plugin zips were built"
+            exit 1
+          fi
+
+          name=$(node -p "require('./manifest.json').name")
+          version=$(node -p "require('./manifest.json').version")
+          description=$(node -p "require('./manifest.json').description")
+          abi=$(node -p "require('./manifest.json').abi")
+
+          {
+            echo "## $name $version"
+            echo
+            echo "$description"
+            echo
+            echo "Import into the Companion app: **Settings → Plugins → Import plugin…** and pick the zip for your platform."
+            echo
+            echo "| File | Platform |"
+            echo "|---|---|"
+            for f in "${files[@]}"; do
+              base=$(basename "$f")
+              case "$base" in
+                *-linux-x86_64.zip)   platform="Linux (Intel/AMD 64-bit)" ;;
+                *-macos-arm64.zip)    platform="macOS (Apple Silicon)" ;;
+                *-macos-x86_64.zip)   platform="macOS (Intel)" ;;
+                *-windows-x86_64.zip) platform="Windows (64-bit)" ;;
+                *)                    platform="All platforms (frontend-only)" ;;
+              esac
+              echo "| \`$base\` | $platform |"
+            done
+            echo
+            echo "Requires a Companion app with plugin ABI $abi."
+          } > release-notes.md
+
+          gh release create "$GITHUB_REF_NAME" "${files[@]}" \
+            --title "$name $version" \
+            --notes-file release-notes.md \
+          || gh release upload "$GITHUB_REF_NAME" "${files[@]}" --clobber
