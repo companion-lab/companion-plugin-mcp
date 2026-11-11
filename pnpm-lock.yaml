@@ -9,13 +9,13 @@ importers:
   .:
     dependencies:
       '@companion-lab/plugin':
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: ^0.3.0
+        version: 0.3.0
 
 packages:
 
-  '@companion-lab/plugin@0.1.0':
-    resolution: {integrity: sha512-jiJOoVYl9EdFFWTXBUDcLghgzDrMoOq9JxU5vgB1V9mLpyyNmGPAUbg6YjGiCebcdvLitM+ubq34HBQIyCkVlQ==}
+  '@companion-lab/plugin@0.3.0':
+    resolution: {integrity: sha512-YpDe49467WFVMsiOJsgmu34WiS99la+qXnorKuidQB2uqqVl9HtRqvfiToZkYR+8124nE/b63rIm4Ign29ElTw==}
     peerDependencies:
       react: '>=18.0.0'
     peerDependenciesMeta:
@@ -24,4 +24,4 @@ packages:
 
 snapshots:
 
-  '@companion-lab/plugin@0.1.0': {}
+  '@companion-lab/plugin@0.3.0': {}

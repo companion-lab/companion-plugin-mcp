@@ -1,9 +1,9 @@
 {
   "name": "companion-plugin-mcp",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "description": "MCP feature plugin for the Companion app.",
   "dependencies": {
-    "@companion-lab/plugin": "^0.1.0"
+    "@companion-lab/plugin": "^0.3.0"
   }
 }

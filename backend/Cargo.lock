@@ -138,9 +138,9 @@ dependencies = [
 
 [[package]]
 name = "companion-plugin-sdk"
-version = "0.1.0"
+version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5213fbb339350aeab0fa7c703c44e5879ffd688c8f502ce543e857482344f453"
+checksum = "5db81ff806956f5dc8ad28f797fe3df2ec09cde8c65479e011d29aca441f3a81"
 dependencies = [
  "serde",
  "serde_json",
@@ -700,7 +700,7 @@ checksum = "4050469837a6ff301cd14c1f8f24f88549e6d548f24f64e2148eb0f72cebc51f"
 
 [[package]]
 name = "mcp-backend"
-version = "0.1.0"
+version = "0.3.0"
 dependencies = [
  "companion-plugin-sdk",
  "rmcp",
