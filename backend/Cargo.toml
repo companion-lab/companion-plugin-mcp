@@ -1,6 +1,6 @@
 [package]
 name = "mcp-backend"
-version = "0.3.0"
+version = "0.3.1"
 description = "MCP feature plugin backend for companion-tauri"
 license = "MIT"
 edition = "2021"
