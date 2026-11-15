@@ -14,5 +14,7 @@
   },
   "frontend": {
     "entry": "frontend.js"
-  }
+  },
+  "versionCheckUrl": "https://github.com/companion-lab/companion-plugin-mcp/releases/latest",
+  "updateUrl": "https://github.com/companion-lab/companion-plugin-mcp/releases/latest/download/mcp-{version}-{platform}.zip"
 }
