@@ -4,7 +4,13 @@
   "private": true,
   "description": "MCP feature plugin for the Companion app.",
   "author": "Companion Lab",
+  "scripts": {
+    "test": "vitest run"
+  },
   "dependencies": {
     "@companion-lab/plugin": "^0.3.0"
+  },
+  "devDependencies": {
+    "vitest": "^5.0.5"
   }
 }
