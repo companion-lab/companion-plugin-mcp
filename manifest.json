@@ -3,7 +3,7 @@
   "name": "MCP Tools",
   "version": "0.3.2",
   "description": "Model Context Protocol client: connect MCP servers and expose their tools to the avatar.",
-  "abi": 2,
+  "abi": 3,
   "permissions": [
     "storage",
     "events",
