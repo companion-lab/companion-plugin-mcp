@@ -1,2 +1,2 @@
 minimumReleaseAgeExclude:
-  - '@companion-lab/plugin@0.3.1'
+  - '@companion-lab/plugin@0.3.2'

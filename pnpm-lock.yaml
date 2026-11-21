@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@companion-lab/plugin':
-        specifier: ^0.3.1
-        version: 0.3.1
+        specifier: ^0.3.2
+        version: 0.3.2
     devDependencies:
       vitest:
         specifier: ^5.0.5
@@ -18,8 +18,8 @@ importers:
 
 packages:
 
-  '@companion-lab/plugin@0.3.1':
-    resolution: {integrity: sha512-N5DFQYMWNoza4+sL0FI2PB4qBbYi6fLkL4V0u21Dcq66y38V+9wFPk/KUwkZusQSqzx8WH+SiXNgBn0vij5rjw==}
+  '@companion-lab/plugin@0.3.2':
+    resolution: {integrity: sha512-a6wH1P2xNwl+lmf7q1xy5yDdgFOh4o0QiTS3ox+nWeLN1Vox7kX/uh5iNGQNQArpRLp7D9Tqbo3qeysjIZgzoA==}
     peerDependencies:
       react: '>=18.0.0'
     peerDependenciesMeta:
@@ -436,7 +436,7 @@ packages:
 
 snapshots:
 
-  '@companion-lab/plugin@0.3.1': {}
+  '@companion-lab/plugin@0.3.2': {}
 
   '@emnapi/core@2.0.0-beta.2':
     dependencies:
