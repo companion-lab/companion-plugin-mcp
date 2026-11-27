@@ -1,7 +1,7 @@
 {
   "id": "mcp",
   "name": "MCP Tools",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Model Context Protocol client: connect MCP servers and expose their tools to the avatar.",
   "abi": 3,
   "permissions": [
